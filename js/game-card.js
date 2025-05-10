@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const skipSound = document.getElementById('skip-sound');
   const lifeLostSound = document.getElementById('lifeLostSound');
   const gameOverSound = document.getElementById('gameOverSound');
+  const victorySound = document.getElementById('victorySound');
 
   let score = 0;
   let lives = 3;
@@ -286,8 +287,28 @@ document.addEventListener('keydown', function (e) {
     finalScoreEl.textContent = score;
     masteredCountEl.textContent = masteredStatuses.size;
     gameOverEl.classList.add('active');
-    if (audioEnabled) gameOverSound.play().catch(() => {});
+
+    const gameOverTitle = gameOverEl.querySelector('h2');
+    gameOverTitle.classList.remove('game-over-title', 'game-finished-title');
+
+    if (masteredStatuses.size >= httpStatuses.length) {
+      gameOverTitle.textContent = '🎉 Finished Game!';
+      gameOverTitle.classList.add('game-finished-title');
+      if (audioEnabled && victorySound) {
+        victorySound.currentTime = 0;
+        victorySound.play().catch(() => {});
+      }
+    } else {
+      gameOverTitle.textContent = '💀 Game Over';
+      gameOverTitle.classList.add('game-over-title');
+      if (audioEnabled && gameOverSound) {
+        gameOverSound.currentTime = 0;
+        gameOverSound.play().catch(() => {});
+      }
+    }
   }
+
+
 
   function resetGame() {
     score = 0;

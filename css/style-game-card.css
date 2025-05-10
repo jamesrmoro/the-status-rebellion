@@ -345,6 +345,12 @@ h1 {
   text-shadow: 0 0 10px rgba(247, 37, 133, 0.5);
 }
 
+.game-over h2.game-finished-title {
+
+  color: #4CAF50;
+  text-shadow: 0 0 10px #4CAF50;
+}
+
 .game-over p {
   font-size: 16px;
   margin-bottom: 0px;
@@ -399,6 +405,12 @@ h1 {
 
   .swiper-container {
     width: 100%;
+  }
+
+  .game-over h2 {
+
+    margin-bottom: 10px;
+    font-size: 21px;
   }
 
   .desktop-only {
