@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTTP - The Status Rebellion</title>
+  <link rel="stylesheet" href="./css/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="./css/style-game-card.min.css">
+  <link rel="stylesheet" href="./css/style.min.css">
+  <link rel="icon" type="image/png" href="./favicon/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="./favicon/favicon.svg" />
+  <link rel="shortcut icon" href="./favicon/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-touch-icon.png" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-356GJ1VDJM"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-356GJ1VDJM', {
+            'send_page_view': true,
+            'page_path': location.pathname,
+            'page_location': location.href,
+            'page_title': document.title
+        });
+    </script>
+</head>
+<body>
+  <div id="rotateMessage">Rotate to portrait to play</div>
+
+  <!-- About Modal -->
+  <div id="aboutModal">
+    <div class="wrapperModal">
+      <h2>About game</h2>
+      <p>
+        <strong>HTTP The Status Rebellion</strong> is a game where you must return the HTTP statuses to their original universes.
+        Drag each card into the HTTP TRAP in the center and observe the unique effects of each status. Inspired by the true guardians of the internet!
+      </p>
+      <p>
+        This project was created as part of the <strong>Amazon Q Developer "Quack The Code"</strong> challenge on <a href="https://dev.to/jamesrmoro/the-status-rebellion-an-epic-game-about-http-codes-16n7" target="_blank" style="color:#00faff;">dev.to</a>.
+      </p>
+      <p>Credit song: <a style="color:#fff;" href="https://pixabay.com/pt/music/musicas-felizes-para-criancas-kids-game-gaming-background-music-295075/" target="_blank">Ievgen Poltavskyi (HitsLab)</a></p>
+      <button class="buttonClose" onclick="closeAboutModal()">Close</button>
+    </div>
+  </div>
+
+  <!-- Universe Background -->
+  <div class="universe" id="universe"></div>
+
+  <!-- End Message -->
+  <div id="endMessage">
+    All requests have been sent to their worlds.
+  </div>
+
+  <!-- Audio Elements -->
+  <audio id="trapOpenSound" src="audio/open.mp3" preload="auto"></audio>
+  <audio id="thanksSound" src="audio/thanks.mp3" preload="auto"></audio>
+  <audio id="waitSound" src="audio/wait.mp3" preload="auto"></audio>
+  <audio id="trapCloseSound" src="audio/closed.mp3" preload="auto"></audio>
+  <audio id="sound200" src="audio/audio-200.mp3" preload="auto"></audio>
+  <audio id="sound301" src="audio/audio-301.mp3" preload="auto"></audio>
+  <audio id="sound302" src="audio/audio-302.mp3" preload="auto"></audio>
+  <audio id="sound403" src="audio/audio-403.mp3" preload="auto"></audio>
+  <audio id="sound404" src="audio/audio-404.mp3" preload="auto"></audio>
+  <audio id="sound500" src="audio/audio-500.mp3" preload="auto"></audio>
+  <audio id="bubbleSound" src="audio/bubble.mp3" preload="auto"></audio>
+  <audio id="electricitySound" src="audio/electricity.mp3" preload="auto"></audio>
+  <audio id="bgMusic" src="audio/soundtrack.mp3" loop></audio>
+
+  <!-- Audio Controls -->
+  <div id="audioControls">
+    <button onclick="toggleAudio()">🔊</button>
+  </div>
+
+  <!-- Intro Container -->
+  <div class="container">
+    <h1>HTTP</h1>
+    <h2>The Status Rebellion</h2>
+    <div class="scroll-wrapper">
+        <div class="wrapper-container">
+          <p>For years, social media ruled the world with its "relationship status," "mood status," and "online status." But few remember... the true statuses.</p>
+          <p>Before any of those, there were the <strong>HTTP STATUS CODES</strong> — ancient codes, silent guardians of the web, determining what could be seen, accessed, or denied. They were the foundation of digital order.</p>
+          <p><i>(They say there are over 60 in total — a true family of codes, divided into five great clans: the Informational (1xx), the Successful (2xx), the Redirecting (3xx), the Firmly Denying (4xx), and the Chaotic Server Errors (5xx). Each with a mission, a number, and a unique personality.)</i></p>
+          <p>But over time, they were forgotten. Until one day, they awoke — and now their mission is to restore balance to the internet by returning each status to its original world... before chaos takes total control.</p>
+
+        </div>
+    </div>
+    <button id="startGame" onclick="startGame()">Join</button>
+    <span class="about-game">About game</span>
+  </div>
+
+  <!-- Card Modal -->
+<div id="cardModal">
+  <div class="card-flip-wrapper">
+    <div class="card-flip-inner" id="flipContainer">
+      <div class="card-front">
+        <img id="cardImage" src="" alt="Card" class="imageCard">
+      </div>
+      <div class="card-back" id="cardBack">
+        <p id="cardBackText">Back content here</p>
+      </div>
+    </div>
+    <button class="buttonCloseCard" onclick="closeCardModal()">X</button>
+    <small class="flip-hint">Click to see the back of the card</small>
+  </div>
+</div>
+
+
+  <!-- Game Container -->
+  <div class="group-game">
+    <!-- Status Panel -->
+    <div class="status-panel" id="statusPanel">
+      <span class="intro">
+        <a href="" title="Back intro"><img src="./images/home.webp" alt=""></a>Drag the statuses into the HTTP TRAP and send them back to their universe.</span>
+      <div class="status-flex">
+        <div class="status-option card card-200" data-code="200"><div class="mask"></div><div class="status-code-card" id="about-200"><span>See 200</span></div></div>
+        <div class="status-option card card-301" data-code="301"><div class="mask"></div><div class="status-code-card" id="about-301"><span>See 301</span></div></div>
+        <div class="status-option card card-302" data-code="302"><div class="mask"></div><div class="status-code-card" id="about-302"><span>See 302</span></div></div>
+        <div class="status-option card card-403" data-code="403"><div class="mask"></div><div class="status-code-card" id="about-403"><span>See 403</span></div></div>
+        <div class="status-option card card-404" data-code="404"><div class="mask"></div><div class="status-code-card" id="about-404"><span>See 404</span></div></div>
+        <div class="status-option card card-500" data-code="500"><div class="mask"></div><div class="status-code-card" id="about-500"><span>See 500</span></div></div>
+      </div>
+    </div>
+
+    <!-- Trap Container -->
+    <div class="trap-container">
+      <div id="dialogBox"></div>
+      <div class="bottom-trap">
+        <span class="restart-game" id="restartGame">Restart game</span>
+        <div class="trap open" id="trap">
+        <div id="play-game">
+          <div class="label">HTTP TRAP</div>
+          <span id="text-play" class="game-here">Tap to play</span>
+          <div class="door left"><div><div class="circle"></div></div></div>
+          <div class="door right"><div><div class="circle"></div></div></div>
+          <div class="lights"><div class="light"></div><div class="light"></div></div>
+          <div class="pedal"></div>
+          <svg class="trap-border" viewBox="0 0 300 150" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                <feTurbulence type="fractalNoise" baseFrequency="0.075" numOctaves="1" result="turbulence"/>
+                <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="30" xChannelSelector="R" yChannelSelector="G" result="displace"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="displace"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+            <rect class="line-1" x="0" y="0" width="300" height="150" fill="none" stroke="#f6de8d"/>
+            <rect class="line-2" x="0" y="0" width="300" height="150" fill="none" stroke="#6bfeff"/>
+          </svg>
+        </div>
+    </div>
+      </div>
+      <div id="retroConsole"></div>
+    </div>
+  </div>
+
+    <div class="game-2" id="game-2" style="display: none;">
+        <div class="blur"></div>
+      <div class="game-container" >
+        <!-- Header -->
+        <header>
+          <div class="score-container">
+            <span><strong>Score:</strong> <span id="score">0</span></span>
+            <div class="lives-container" id="livesContainer">
+              <img src="images/heart-full.webp" class="heart" />
+              <img src="images/heart-full.webp" class="heart" />
+              <img src="images/heart-full.webp" class="heart" />
+            </div>
+          </div>
+        </header>
+
+        <!-- Game Instructions -->
+        <div class="instructions" id="instructions">
+          <h2>Match the HTTP status description with the correct code!</h2>
+          <p>Swipe through the status codes and tap when you find the right match.</p>
+          <button id="start-game-card">Start Game</button>
+        </div>
+
+        <!-- Game Area -->
+        <div id="game-area" class="game-area">
+          <!-- Description Card -->
+          <div class="description-card">
+            <div class="card-inner">
+              <h3>Status Description:</h3>
+              <p id="status-description">This status indicates that the request has succeeded.</p>
+            </div>
+          </div>
+
+          <!-- Status Code Cards Swiper -->
+          <div class="swiper-container">
+            <div class="swiper-wrapper" id="status-cards">
+              <!-- Cards will be generated by JavaScript -->
+            </div>
+            <!-- Pagination -->
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-prev desktop-only"></div>
+            <div class="swiper-button-next desktop-only"></div>
+          </div>
+
+          <div class="action-buttons">
+            <button id="submit-answer" class="button-game-card">Submit Answer</button>
+            <button id="skip-question" class="button-game-card">Skip</button>
+          </div>
+        </div>
+
+        <!-- Feedback Overlay -->
+        <div class="feedback-overlay" id="feedback-overlay">
+          <div class="feedback-content">
+            <h2 id="feedback-text">Correct!</h2>
+            <p id="feedback-description"></p>
+            <button id="continue-button">Continue</button>
+          </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div class="game-over" id="game-over">
+          <h2>Game Over!</h2>
+          <p>Your final score: <span id="final-score">0</span></p>
+          <p>You've mastered <span id="mastered-count">0</span> HTTP status codes!</p>
+          <button id="play-again">Play Again</button>
+        </div>
+
+        <!-- Audio Controls -->
+        <button id="buttonCloseModalCard" class="button-close-modal-card">X</button>
+      </div>
+    </div>
+
+  <!-- Audio Elements -->
+  <audio id="lifeLostSound" src="audio/life.mp3" preload="auto"></audio>
+  <audio id="gameOverSound" src="audio/game-over.mp3" preload="auto"></audio>
+  <audio id="trapCloseModal" src="audio/close-modal.mp3" preload="auto"></audio>
+  <audio id="flipSound" src="audio/flip.mp3" preload="auto"></audio>
+  <audio id="skip-sound" src="audio/skip.mp3" preload="auto"></audio>
+  <audio id="correct-sound" src="audio/correct.mp3" preload="auto"></audio>
+  <audio id="wrong-sound" src="audio/wrong.mp3" preload="auto"></audio>
+  <audio id="background-music" src="audio/background.mp3" loop></audio>
+
+  <!-- Libs JS -->
+  <script src="./js/jquery-3.6.0.min.js"></script>
+  <script src="./js/jquery-ui.min.js"></script>
+  <script src="./js/jquery.ui.touch-punch.min.js"></script>
+  <script src="./js/swiper-bundle.min.js"></script>
+  <!-- JavaScript -->
+  <script src="js/game.js"></script>
+  <script src="js/game-card.js"></script>
+</body>
+</html>
